@@ -22,7 +22,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(`/api/auth/${type}`, {
+      const res = await fetch(`http://localhost:5000/api/auth/${type}`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },

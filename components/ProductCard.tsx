@@ -12,19 +12,19 @@ type ProductCardProps = {
 const ProductCard = ({ product, priority = false }: ProductCardProps) => {
   const { addToCart } = useCart();
 
-  const hasImage = product.images?.length > 0 && product.images[0] !== "";
+  const hasImage = product.image !== "";
 
   return (
     <div className="bg-white/50 dark:bg-zinc-900/60 backdrop-blur-md border border-neutral-200 dark:border-zinc-700 rounded-lg shadow p-4 space-y-4 transition hover:shadow-xl hover:scale-[1.02] duration-300">
       {hasImage ? (
         <Image
-          src={product.images[0]}
+          src={product.image}
           alt={product.title}
           width={500}
           height={500}
           className="w-full h-64 object-cover rounded"
           placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzUwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMu"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiNlMWUxZTEiLz48dGV4dCB4PSIyNTAiIHk9IjI2MCIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzc3NyI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+"
           priority={priority} // Boost LCP for first few images
         />
       ) : (

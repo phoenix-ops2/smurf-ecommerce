@@ -20,7 +20,9 @@ const Homepage = () => {
     const fetchProducts = async () => {
       setIsLoading(true);
 
-      const res = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+      const res = await fetch(`http://localhost:5000/api/products?limit=${limit}&skip=${skip}`, {
+        cache: "no-store",
+      });
       const data = await res.json();
 
       // console.log(data); //For debugging Data from API

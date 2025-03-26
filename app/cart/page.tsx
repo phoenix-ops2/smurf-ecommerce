@@ -24,24 +24,33 @@ const CartPage = () => {
 
     try {
       setIsPlacingOrder(true);
-      const res = await fetch("/api/checkout", {
+
+      const res = await fetch("http://localhost:5000/api/orders", {
         method: "POST",
-        body: JSON.stringify(cartItems),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`, // ✅ Send token
         },
+        body: JSON.stringify({
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          })),
+        }),
       });
 
-      if (!res.ok) throw new Error("Checkout failed");
-
       const data = await res.json();
-      toast.success(`✅ Order placed! Order ID: ${data.orderId}`);
 
+      if (!res.ok) {
+        throw new Error(data?.error || "Checkout failed");
+      }
+
+      toast.success(`✅ Order placed! Order ID: ${data.order.id}`);
       clearCart();
       router.push("/success");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Something went wrong";
-      toast.error(message);
+      toast.error(`❌ ${message}`);
     } finally {
       setIsPlacingOrder(false);
     }
@@ -70,9 +79,9 @@ const CartPage = () => {
               >
                 <div className="flex items-center gap-4 w-full">
                   {/* Product Thumbnail */}
-                  {item.images?.[0] ? (
+                  {item.image ? (
                     <Image
-                      src={item.images[0]}
+                      src={item.image}
                       alt={item.title}
                       width={64}
                       height={64}
