@@ -15,7 +15,14 @@ const ProductCard = ({ product, priority = false }: ProductCardProps) => {
   const hasImage = product.image !== "";
 
   return (
-    <div className="bg-white/50 dark:bg-zinc-900/60 backdrop-blur-md border border-neutral-200 dark:border-zinc-700 rounded-lg shadow p-4 space-y-4 transition hover:shadow-xl hover:scale-[1.02] duration-300">
+    <div
+      className={`relative backdrop-blur-md border rounded-lg shadow p-4 space-y-4 transition duration-300 hover:shadow-xl hover:scale-[1.02] 
+    ${
+      product.stock <= 0
+        ? "opacity-60 pointer-events-none"
+        : "bg-white/50 dark:bg-zinc-900/60 border-neutral-200 dark:border-zinc-700"
+    }`}
+    >
       {hasImage ? (
         <Image
           src={product.image}
@@ -34,8 +41,16 @@ const ProductCard = ({ product, priority = false }: ProductCardProps) => {
       )}
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold">{product.title}</h3>
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-semibold">{product.title}</h3>
+          {product.stock <= 0 && (
+            <span className="absolute top-2 left-2 z-10 bg-red-700 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-md uppercase tracking-wide">
+              Out of Stock
+            </span>
+          )}
+        </div>
         <p className="text-gray-700 dark:text-gray-300">${product.price}</p>
+
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
